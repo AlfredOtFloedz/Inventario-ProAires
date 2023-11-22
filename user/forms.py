@@ -11,6 +11,12 @@ class CreateUserForm(UserCreationForm):
         fields = [
             'username', 'email', 'password1', 'password2',
         ]
+        labels = {
+            'username' : 'Nombre de Usuario',
+            'email' : 'Correo Electrónico',
+            'password1':'Contraseña',
+            'password2':'Contraseña',
+        }
         
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -18,6 +24,10 @@ class UserUpdateForm(forms.ModelForm):
         fields = [
             'username', 'email',
         ]
+        labels ={
+            'username':'Nombre de Usuario',
+            'email':'Correo Electrónico',
+        }
         
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
@@ -25,3 +35,8 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = [
             'address', 'phone', 'image',
         ]
+        labels = {
+            'address':'Dirección',
+            'phone':'Teléfono',
+            'image':'Foto de Perfil',
+        }
