@@ -23,7 +23,7 @@ class Producto(models.Model):
     price_update = models.DateTimeField(default=None, null=True, blank=True)
     
     def __str__(self):
-        return f'{self.name}-{self.quantity}'
+        return f'{self.name}-{self.code}'
 
 class Order(models.Model):
     product = models.ForeignKey(Producto, on_delete=models.CASCADE)
