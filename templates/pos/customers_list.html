@@ -1,0 +1,59 @@
+{% extends 'partials/base.html' %}
+{% block title %}Registro de Clientes{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% include 'partials/topnav_pos.html' %}
+
+    <!--Table-->
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-4">
+                {% for message in messages %}
+                {% if message %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{message}}
+                </div>
+                {% endif %}
+                {% endfor%}
+
+                <div class="border bg-white p-3">
+                    <h4>Registrar Cliente</h4>
+                    <hr>
+                    <form method ="POST">
+                        {% csrf_token %}
+                        {{form|crispy }}
+                        <input class="btn btn-success btn-block" type="submit" value="Añadir">
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <table class="table bg-white">
+                    <thead class="bg-info">
+                        <tr class="text-white">
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Teléfono</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Distribuidor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customer %}
+                        <tr>
+                            <th scope="row">{{ customer.customer_name }}</th>
+                            <td>{{ customer.c_phone }}</td>
+                            <td>{{ customer.c_email }}</td>
+                            <td>{{ customer.status }}</td>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!--End Table-->
+
+{% endblock %}

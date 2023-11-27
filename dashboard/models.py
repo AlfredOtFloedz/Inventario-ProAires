@@ -1,14 +1,13 @@
 from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import User
-
+from pos.models import Customer
 # Create your models here.
 
-
 CATEGORY = (
-    ('Minisplit', 'Minisplit'),
-    ('Boiler', 'Boiler'),
-    ('Ferreteria', 'Ferreteria'),
+    ('1', 'Condensadora'),
+    ('2', 'Evaporadora'),
+    ('3', 'Boiler'),
 )
 
 class Producto(models.Model):
@@ -23,16 +22,15 @@ class Producto(models.Model):
     price_update = models.DateTimeField(default=None, null=True, blank=True)
     
     def __str__(self):
-        return f'{self.name}-{self.quantity}'
+        return f'{self.name}--{self.code}'
 
 class Order(models.Model):
     product = models.ForeignKey(Producto, on_delete=models.CASCADE)
     staff = models.ForeignKey(User, models.CASCADE)
     order_quantity = models.PositiveBigIntegerField()
     date = models.DateTimeField(auto_now_add=True)
-    customer = models.CharField(max_length=100, default=None)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     
-    #Cambiar etiqueta en la barra de lateral Pedido ---> Ventas
     class Meta:
         verbose_name_plural = 'Pedidos'
     

@@ -1,0 +1,24 @@
+{% extends 'partials/base.html'%}
+{% block title %} Pro Aires {% endblock %}
+
+{% block content %}
+        {% include 'partials/topnav_pos.html' %}
+        {% include 'dashboard/staff_index.html'%}
+        <!--Graphs-->
+        <div class="container">
+            <div class="row my-5">
+                <div class="col-md-6">
+                    <div class="bg-white">
+                        <canvas id="myChart1" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-white">
+                        <canvas id="myChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Graphs-->
+
+{% endblock %}
