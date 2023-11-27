@@ -25,6 +25,7 @@ class Customer(models.Model):
     REG_FIS = models.CharField(max_length=100)
     c_email = models.CharField(max_length=100)
     c_phone = models.CharField(max_length=100)
+    image = models.ImageField(default='avatar.jpg', upload_to='Profile_Images')
 
     class Meta:
         verbose_name_plural = 'Clientes'

@@ -1,0 +1,72 @@
+{% extends 'partials/base.html'%}
+{% block title %}Info Cliente{% endblock %}
+
+{% block content %}
+{% include 'partials/topnav_pos.html' %}
+<!--Table-->
+<div class="container">
+    <div class="row my-4">
+        <div class="col-md-4"></div>
+        <div class="col-md-8">
+    <!--Table-->
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-8 offset-2">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Perfil de Usuario
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span class="h4"> Información del Perfil</span>
+                                <hr>
+                                <table class="table bg-white table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Nombre</th>
+                                            <td>{{customers.customer_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Correo Electrónico</th>
+                                            <td>{{customers.c_email}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Telefono</th>
+                                            <td>{{customers.c_phone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Dirección</th>
+                                            <td>{{customers.DIR}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Distribuidor</th>
+                                            <td>{{customers.status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="col-md-4">
+                                <img class="img-thumbnail" src="{{ customers.image.url }}" alt="Imagen de Cliente">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--End Table-->
+        </div>
+    </div>
+
+</div>
+
+<!--End Table-->
+
+{% endblock %}

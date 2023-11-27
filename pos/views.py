@@ -70,7 +70,7 @@ def customer(request):
     customer = Customer.objects.all()
     customer_count = customer.count()
     if request.method == 'POST':
-        form = CustomerForm(request.POST)
+        form = CustomerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             customer_name = form.cleaned_data.get('customer_name')
@@ -98,7 +98,7 @@ def new_customer(request):
     customer_count = customer.count()
     
     if request.method == 'POST':
-        form = CustomerForm(request.POST)
+        form = CustomerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             customer_name = form.cleaned_data.get('customer_name')
@@ -116,11 +116,14 @@ def new_customer(request):
 
 @login_required
 def customer_detail(request, pk):
-    workers = User.objects.get(id=pk)
+    customers = Customer.objects.get(id=pk)
+    customer_count = Customer.objects.count()
+    
     context = {
-        'workers':workers 
+        'customers':customers,
+        'customer_count': customer_count,
     }
-    return render(request, 'dashboard/staff_detail.html', context)
+    return render(request, 'pos/customer_detail.html', context)
 
 
 @login_required

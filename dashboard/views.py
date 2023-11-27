@@ -80,9 +80,20 @@ def staff(request):
 
 @login_required
 def staff_detail(request, pk):
+    items_count = Producto.objects.count()
+    total_quantity = Producto.objects.aggregate(Sum('quantity'))['quantity__sum']
+    orders_count = Order.objects.count()
+    total_order_quantity = Order.objects.aggregate(Sum('order_quantity'))['order_quantity__sum']
     workers = User.objects.get(id=pk)
+    workers_count = User.objects.count()
+    
     context = {
-        'workers':workers 
+        'workers':workers,
+        'items_count': items_count,
+        'total_quantity': total_quantity,
+        'orders_count': orders_count,
+        'total_order_quantity': total_order_quantity,
+        'workers_count': workers_count,
     }
     return render(request, 'dashboard/staff_detail.html', context)
 
