@@ -46,7 +46,10 @@
                             <td>{{ customer.c_phone }}</td>
                             <td>{{ customer.c_email }}</td>
                             <td>{{ customer.status }}</td>
-                            <th scope="row"><a class="btn btn-info btn-sm" href="{% url 'pos-customer-info' customer.id %}">Ver</a></th><th scope="row"></th>
+                            <th>
+                                <a class="btn btn-info btn-sm" href="{% url 'pos-customer-info' customer.id %}">Ver</a>
+                                <a class="btn btn-info btn-sm" href="{% url 'pos-customer-info' customer.id %}">Imprimir</a>
+                            </th>
                         {% endfor %}
                     </tbody>
                 </table>
