@@ -12,11 +12,12 @@ from dashboard.models import Producto, Order
 from . forms import CustomerForm
 from dashboard.forms import ProductoForm, OrderForm
 
-import csv
+#Credenciales
+import barcode
+from barcode.writer import ImageWriter
 
 # Create your views here.
 @login_required
-#@login_required(login_url='user-login') #Fuerza a iniciar sesión antes de mostrar la página
 def pos_index(request):
     orders = Order.objects.all()
     productos = Producto.objects.all()
@@ -59,6 +60,7 @@ def pos_index(request):
     }
     return render(request, 'pos/pos_index.html', context)
 
+@login_required
 def customer(request):
     orders = Order.objects.all()
     productos = Producto.objects.all()
@@ -93,28 +95,6 @@ def customer(request):
     return render(request, 'pos/customers_list.html', context)
 
 @login_required
-def new_customer(request):
-    customer = Customer.objects.all()
-    customer_count = customer.count()
-    
-    if request.method == 'POST':
-        form = CustomerForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            customer_name = form.cleaned_data.get('customer_name')
-            messages.success(request, f'{customer_name} se ha añadido correctamente')
-            return redirect('dashboard-producto')
-    else: 
-        form = CustomerForm()
-        
-    context = {
-        'customer': customer,
-        'customer_count': customer_count,
-        'form' : form,
-    } 
-    return render(request, 'pos/registro_clientes.html', context)
-
-@login_required
 def customer_detail(request, pk):
     customers = Customer.objects.get(id=pk)
     customer_count = Customer.objects.count()
@@ -124,7 +104,6 @@ def customer_detail(request, pk):
         'customer_count': customer_count,
     }
     return render(request, 'pos/customer_detail.html', context)
-
 
 @login_required
 def pos_facturacion(request):
