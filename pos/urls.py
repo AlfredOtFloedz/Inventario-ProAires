@@ -8,6 +8,7 @@ urlpatterns = [
     path('facturacion/', views.pos_facturacion , name='pos-facturacion'),
     path('punto_venta/', views.pos_index , name='pos-index'),
     path('info_cliente/<int:pk>/', views.customer_detail , name='pos-customer-info'),
+    path('registro_ventas/', views.pos_corte , name='pos-corte'),
 ]
 # Agrega configuración para archivos estáticos y multimedia solo en entorno de desarrollo
 if settings.DEBUG:

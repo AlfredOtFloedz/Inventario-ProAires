@@ -7,14 +7,10 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from datetime import timezone
 
-from . models import Customer
+from . models import Customer, CustomerID
 from dashboard.models import Producto, Order
 from . forms import CustomerForm
 from dashboard.forms import ProductoForm, OrderForm
-
-#Credenciales
-import barcode
-from barcode.writer import ImageWriter
 
 # Create your views here.
 @login_required
@@ -71,6 +67,7 @@ def customer(request):
     total_order_quantity = orders.aggregate(Sum('order_quantity'))['order_quantity__sum']
     customer = Customer.objects.all()
     customer_count = customer.count()
+    
     if request.method == 'POST':
         form = CustomerForm(request.POST, request.FILES)
         if form.is_valid():
@@ -98,10 +95,14 @@ def customer(request):
 def customer_detail(request, pk):
     customers = Customer.objects.get(id=pk)
     customer_count = Customer.objects.count()
+    barcode = CustomerID.objects.filter(customer=customers).first()
+    orders_count = Order.objects.count()
     
     context = {
         'customers':customers,
         'customer_count': customer_count,
+        'barcode':barcode,
+        'orders_count': orders_count,
     }
     return render(request, 'pos/customer_detail.html', context)
 
@@ -138,3 +139,17 @@ def pos_facturacion(request):
     } 
     return render(request, 'pos/factura.html', context)
     
+@login_required
+def pos_corte(request):
+    orders = Order.objects.all()
+    orders_count = orders.count()
+    total_order_quantity = orders.aggregate(Sum('order_quantity'))['order_quantity__sum']
+    customer_count = Customer.objects.count()
+
+    context = {
+        'orders': orders, 
+        'orders_count': orders_count,
+        'total_order_quantity':total_order_quantity ,
+        'customer_count': customer_count,
+    }
+    return render(request, 'pos/pos_corte.html', context)
