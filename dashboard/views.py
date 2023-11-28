@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 from datetime import timezone
 
@@ -99,9 +100,11 @@ def staff_detail(request, pk):
 
 @login_required
 def producto(request):
-    items = Producto.objects.all()
-    items_count = items.count()
-    total_quantity = items.aggregate(Sum('quantity'))['quantity__sum']
+    # Obtener la suma de cantidades por combinación única de nombre, modelo y categoría
+    items = Producto.objects.values('name', 'type').annotate(total_quantity=Sum('quantity'))
+
+    items_count = len(items)
+    total_quantity = sum(item['total_quantity'] for item in items)
     workers_count = User.objects.count()
     orders_count = Order.objects.count()
     total_order_quantity = Order.objects.aggregate(Sum('order_quantity'))['order_quantity__sum']
@@ -123,8 +126,7 @@ def producto(request):
         'items_count': items_count,
         'orders_count': orders_count,
         'total_quantity': total_quantity,
-        'total_order_quantity':total_order_quantity ,
-
+        'total_order_quantity': total_order_quantity,
     } 
     return render(request, 'dashboard/producto.html', context)
 

@@ -33,21 +33,18 @@
                 <table class="table bg-white">
                     <thead class="bg-info">
                         <tr class="text-white">
-                            <th scope="col">Código</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Modelo</th>
-                            <th scope="col">Categoría</th>
-                            <th scope="col">Cantidad</th>
+                            <th scope="col">Cantidad Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in items %}
                         <tr>
-                            <th scope="row">{{ item.code }}</th>
                             <td>{{ item.name }}</td>
                             <td>{{ item.type }}</td>
-                            <td>{{ item.category }}</td>
-                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.total_quantity|default:"0" }}</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
