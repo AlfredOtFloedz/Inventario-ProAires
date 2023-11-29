@@ -57,7 +57,6 @@ def index(request):
     }
     return render(request, 'dashboard/index.html', context)
 
-
 @login_required #En este caso el comando es más corto porque se ha especificado en /inventario/settings.py el url por defecto
 def staff(request):
     workers = User.objects.all()
@@ -101,8 +100,7 @@ def staff_detail(request, pk):
 @login_required
 def producto(request):
     # Obtener la suma de cantidades por combinación única de nombre, modelo y categoría
-    items = Producto.objects.values('name', 'type').annotate(total_quantity=Sum('quantity'))
-
+    items = Producto.objects.values('name', 'type',).annotate(total_quantity=Sum('quantity'))
     items_count = len(items)
     total_quantity = sum(item['total_quantity'] for item in items)
     workers_count = User.objects.count()
@@ -170,7 +168,7 @@ def producto_update(request, pk):
 
 @login_required
 def precio(request):
-    items = Producto.objects.all()
+    items = Producto.objects.all().order_by('name')
     items_count = items.count()
     total_quantity = items.aggregate(Sum('quantity'))['quantity__sum']
 
