@@ -9,7 +9,8 @@ urlpatterns = [
     path('producto/delete/<int:pk>/', views.producto_delete, name='dashboard-producto-delete'),
     path('producto/update/<int:pk>/', views.producto_update, name='dashboard-producto-update'),
     path('pedido/', views.order, name='dashboard-order'),
-    path('precio/', views.precio, name='dashboard-precio'),
+    path('registros/', views.producto_registro, name='dashboard-registros'),
     path('producto_csv/', views.producto_csv, name='dashboard-producto-csv'),
-    path('pedido_csv/', views.order_csv, name='dashboard-order-csv') 
+    path('pedido_csv/', views.order_csv, name='dashboard-order-csv'),
+    path('lista_precios/', views.precio , name='dashboard-precio'),
 ]

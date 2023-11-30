@@ -1,19 +1,20 @@
 from django import forms
-from . models import Producto, Order, Customer
+from . models import Producto, Order, Customer, TYPE
 from django.forms import ValidationError
 
 class ProductoForm(forms.ModelForm):
+    type = forms.ChoiceField(choices=TYPE)
     
     class Meta:
         model = Producto
         fields = ['code', 'name', 'category', 'type', 'quantity', 'precio']    
         labels = {
-        'code': 'Código',
-        'name': 'Nombre',
-        'category': 'Categoría',
-        'type': 'Modelo',
-        'quantity': 'Cantidad',
-        'precio': 'Precio',
+            'code': 'Código',
+            'name': 'Nombre',
+            'category': 'Categoría',
+            'type': 'Modelo',
+            'quantity': 'Cantidad',
+            'precio': 'Precio',
         }
     
 class OrderForm(forms.ModelForm):
@@ -41,3 +42,5 @@ class OrderForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.product = self.cleaned_data['product_code']
         return super().save(commit)
+    
+    

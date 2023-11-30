@@ -8,10 +8,11 @@ from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 from datetime import timezone
 
-from . models import Producto, Order
+from . models import Producto, Order, Precios
 from . forms import ProductoForm, OrderForm
-
+from pos.models import Customer
 import csv
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -97,11 +98,57 @@ def staff_detail(request, pk):
     }
     return render(request, 'dashboard/staff_detail.html', context)
 
+def assign_model_from_code(code):
+    # Definir las concordancias entre códigos y modelos
+    code_model_mapping = {
+        'CWC361B': 'SETCWC361B',
+        'CWC261E': 'SETCWC261E',
+        'CWC181E': 'SETCWC181E',
+        'CWC121E': 'SETCWC121E',
+        'CWC120E': 'SETCWC120E',
+        'CMC261V': 'SETCMC261V',
+        'CMC181V': 'SETCMC181V',
+        'CMC121V': 'SETCMC121V',
+        'CMC120V': 'SETCMC120V',
+        'CLC261T': 'SETCLC261T',
+        'CLC181T': 'SETCLC181T',
+        'CLC121T': 'SETCLC121T',
+        'CLC120T': 'SETCLC120T',
+        'EWC361B': 'SETCWC361B',
+        'EWC261E': 'SETCWC261E',
+        'EWC181E': 'SETCWC181E',
+        'EWC121E': 'SETCWC121E',
+        'EWC120E': 'SETCWC120E',
+        'EMC261V': 'SETCMC261V',
+        'EMC181V': 'SETCMC181V',
+        'EMC121V': 'SETCMC121V',
+        'EMC120V': 'SETCMC120V',
+        'ELC261T': 'SETCLC261T',
+        'ELC181T': 'SETCLC181T',
+        'ELC121T': 'SETCLC121T',
+        'ELC120T': 'SETCLC120T',
+        'MBF16AF': 'MBF16AF',
+        'MBF10BB': 'MBF10BB',
+        'MBF06ZB': 'MBF06ZB',
+        'MDD10CB': 'MDD10CB',
+        'MDD10CS': 'MDD10CS', 
+        # Agrega más concordancias según sea necesario
+    }
+
+    # Obtener las primeras tres letras del código
+    code_prefix = code[:7]
+
+    # Buscar el modelo correspondiente en el mapeo
+    model = code_model_mapping.get(code_prefix, None)
+
+    return model
+
+
 @login_required
 def producto(request):
     # Obtener la suma de cantidades por combinación única de nombre, modelo y categoría
     items = Producto.objects.values('name', 'type',).annotate(total_quantity=Sum('quantity'))
-    items_count = len(items)
+    items_count = Producto.objects.count()
     total_quantity = sum(item['total_quantity'] for item in items)
     workers_count = User.objects.count()
     orders_count = Order.objects.count()
@@ -110,11 +157,25 @@ def producto(request):
     if request.method == 'POST':
         form = ProductoForm(request.POST)
         if form.is_valid():
+            # Obtener el código ingresado en el formulario
+            product_code = form.cleaned_data.get('code')
+
+            # Asignar automáticamente el modelo basado en el código
+            assigned_model = assign_model_from_code(product_code)
+            
+            # Asegurarse de que el modelo se haya asignado antes de guardar
+            if assigned_model:
+                form.instance.type = assigned_model
+            else:
+                # Si no se asigna automáticamente, asigna un valor predeterminado o maneja el error
+                form.instance.type = 'DEFAULT_MODEL'
+
             form.save()
             producto_name = form.cleaned_data.get('name')
-            messages.success(request, f'{producto_name} se ha añadido correctamente')
+            messages.success(request, f'{producto_name} Se ha añadido correctamente')
             return redirect('dashboard-producto')
-    else: 
+
+    else:
         form = ProductoForm()
         
     context = {
@@ -133,7 +194,7 @@ def producto_delete(request, pk):
     item = Producto.objects.get(id=pk)
     if request.method == "POST":
         item.delete()
-        return redirect('dashboard-precio')
+        return redirect('dashboard-registros')
     return render(request, 'dashboard/producto_delete.html')
 
 @login_required
@@ -167,7 +228,7 @@ def producto_update(request, pk):
     return render(request, 'dashboard/producto_update.html', context)
 
 @login_required
-def precio(request):
+def producto_registro(request):
     items = Producto.objects.all().order_by('name')
     items_count = items.count()
     total_quantity = items.aggregate(Sum('quantity'))['quantity__sum']
@@ -185,7 +246,7 @@ def precio(request):
         'total_order_quantity':total_order_quantity ,
 
     } 
-    return render(request, 'dashboard/precio.html', context)
+    return render(request, 'dashboard/producto_registro.html', context)
 
 @login_required
 def order(request):
@@ -247,3 +308,13 @@ def order_csv(request):
         writer.writerow([order.product.code, order.product.name, order.product.category, order.order_quantity, order.staff, order.date, order.customer])
     
     return response
+
+@login_required
+def precio(request):
+    productos = Precios.objects.all()
+    
+    context = {
+        'productos': productos
+    }
+    return render(request, 'dashboard/precio.html', context)
+
