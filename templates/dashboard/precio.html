@@ -1,13 +1,12 @@
 {% extends 'partials/base.html'%}
-{% block title %} Productos {% endblock %}
+{% block title %} Lista de Precios {% endblock %}
 {% load crispy_forms_tags %}
-    
+
 {% block content %}
 
-{% include 'partials/topnav.html' %}
+{% include 'partials/topnav_pos.html' %}
 
     <!--Table-->
-    
     <div class="container">
         <div class="row my-4">
             <div class="col-md-4">
@@ -19,41 +18,44 @@
                 {% endif %}
                 {% endfor%}
 
+                <div class="border bg-white p-3">
+                    <h4>Dar Alta Precio</h4>
+                    <hr>
+                    <form method ="POST">
+                        {% csrf_token %}
+                        {{form|crispy }}
+                        <input class="btn btn-success btn-block" type="submit" value="Añadir">
+
+                    </form>
+                </div>
             </div>
             <div class="col-md-8">
                 <table class="table bg-white">
                     <thead class="bg-info">
                         <tr class="text-white">
-                            <th scope="col">Código</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Actualización</th>
-                            <th scope="col">Acción</th>
+                            <th scope="col" class="text-center">Público En General</th>
+                            <th scope="col" class="text-center">Precio Técnico</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in items %}
+                        {% for producto in productos %}
                         <tr>
-                            <th scope="row">{{ item.code }}</th>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.precio }}</td>
-                            {% if item.price_update == None %}
-                                <td>{{ item.created_at }}</td>
-                            {% else %}
-                                <td>{{ item.price_update }}</td>
-                            {% endif %}
-                            <td>
-                                <a class="btn btn-info btn-sm" href="{% url 'dashboard-producto-update' item.id %}">Editar</a>
-                                <a class="btn btn-danger btn-sm" href="{% url 'dashboard-producto-delete' item.id %}">Eliminar</a>
-                            </td>
+                            <th scope="row">{{ producto.name }}</th>
+                            <td class="text-center">{{ producto.precio_gral }}</td>
+                            <td class="text-center">{{ producto.precio_d0 }}</td>
                         {% endfor %}
                     </tbody>
                 </table>
+                <h3 class="btn btn-primary">
+                    <a class="nav-link" href="{% url 'dashboard-precio-registro' %}"> Lista Completa </a>
+                </h3>
             </div>
         </div>
 
     </div>
 
     <!--End Table-->
+
 
 {% endblock %}

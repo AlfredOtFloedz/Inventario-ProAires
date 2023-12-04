@@ -1,5 +1,5 @@
 {% extends 'partials/base.html'%}
-{% block title %} Editar Artículo {% endblock %}
+{% block title %} Eliminar Artículo {% endblock %}
 {% load crispy_forms_tags %}
     
 {% block content %}
@@ -7,16 +7,16 @@
     <div class="row  my-4">
         <div class="col-md-8 offset-md-2">
             <div class="border">
-                <h3>Editando Artículo</h3>
+                <h3>Eliminando Precio</h3>
                 <hr>
                 <div class="alert alert-danger">
-                    <h4> ¿Está seguro de que desea realizar los cambios en el artículo? </h4>
+                    <h4> ¿Está seguro de que desea eliminar el registro? </h4>
                 </div>
                 <form method="POST">
                     {% csrf_token %}
-                    {{ producto_form | crispy}}
-                    <a class="btn btn-secondary" href="{% url 'dashboard-registros' %}">Cancelar</a>
-                    <input class="btn btn-info" type="submit" value="Actualizar">
+                    {{ form | crispy}}
+                    <a class="btn btn-secondary" href="{% url 'dashboard-precio' %}">Cancelar</a>
+                    <input class="btn btn-danger" type="submit" value="Confirmar">
                 </form>
             </div>
         </div>

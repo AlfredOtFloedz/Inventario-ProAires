@@ -21,23 +21,16 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <a class="text-decoration-none text-dark" href="{% url 'dashboard-staff' %}">
-                                <div class="card my-card shadow text-center p-3">
-                                    <h4>Empleados<i class="fas fa-users"></i></h4><!-- Antes Staff-->
-                                    <h3>{{ workers_count }}</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <a class="text-decoration-none text-dark" href="{% url 'dashboard-producto' %}">
                                 <div class="card my-card shadow text-center p-3">
                                     <h4>Existencias<i class="fas fa-box"></i></h4><!-- Antes Productos-->
                                     <h3>{{ total_quantity }}</h3>
                                 </div>
                             </a>
+                        
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <a class="text-decoration-none text-dark" href="{% url 'dashboard-order' %}">
                                 <div class="card my-card shadow text-center p-3">
                                     <h4>Ventas<i class="fas fa-shipping-fast"></i></h4><!-- Antes Pedidos-->
@@ -45,14 +38,15 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-md-3">
-                            <a class="text-decoration-none text-dark" href="{% url 'dashboard-precio' %}">
+                        <div class="col-md-4">
+                            <a class="text-decoration-none text-dark" href="{% url 'dashboard-staff' %}">
                                 <div class="card my-card shadow text-center p-3">
-                                    <h4>P. Registrados<i class="fas fa-shipping-fast"></i></h4> <!-- Antes Registros-->
-                                    <h3>{{ items_count }}</h3>
+                                    <h4>Empleados<i class="fas fa-users"></i></h4><!-- Antes Staff-->
+                                    <h3>{{ workers_count }}</h3>
                                 </div>
                             </a>
                         </div>
+
                     </div>
                 </div>
             </div>

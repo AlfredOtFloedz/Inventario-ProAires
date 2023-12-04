@@ -14,8 +14,8 @@
                 </div>
                 <form method="POST">
                     {% csrf_token %}
-                    {{ producto_form | crispy}}
-                    <a class="btn btn-secondary" href="{% url 'dashboard-registros' %}">Cancelar</a>
+                    {{ precios_form | crispy}}
+                    <a class="btn btn-secondary" href="{% url 'dashboard-precio' %}">Cancelar</a>
                     <input class="btn btn-info" type="submit" value="Actualizar">
                 </form>
             </div>
