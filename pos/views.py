@@ -107,39 +107,6 @@ def customer_detail(request, pk):
     return render(request, 'pos/customer_detail.html', context)
 
 @login_required
-def pos_facturacion(request):
-    items = Producto.objects.all()
-    items_count = items.count()
-    total_quantity = items.aggregate(Sum('quantity'))['quantity__sum']
-    workers_count = User.objects.count()
-    orders_count = Order.objects.count()
-    total_order_quantity = Order.objects.aggregate(Sum('order_quantity'))['order_quantity__sum']
-    customer_count = Customer.objects.count()
-
-    if request.method == 'POST':
-        form = ProductoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            producto_name = form.cleaned_data.get('name')
-            messages.success(request, f'{producto_name} se ha añadido correctamente')
-            return redirect('pos-facturacion')
-    else: 
-        form = ProductoForm()
-        
-    context = {
-        'items': items,
-        'form' : form,
-        'workers_count': workers_count,
-        'items_count': items_count,
-        'orders_count': orders_count,
-        'total_quantity': total_quantity,
-        'total_order_quantity':total_order_quantity ,
-        'customer_count':customer_count,
-
-    } 
-    return render(request, 'pos/factura.html', context)
-    
-@login_required
 def pos_corte(request):
     orders = Order.objects.all()
     orders_count = orders.count()
@@ -153,3 +120,4 @@ def pos_corte(request):
         'customer_count': customer_count,
     }
     return render(request, 'pos/pos_corte.html', context)
+

@@ -1,5 +1,6 @@
 from django import forms
 from . models import Customer
+from dashboard.models import Producto
 
 class CustomerForm(forms.ModelForm):
     class Meta:

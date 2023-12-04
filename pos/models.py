@@ -7,14 +7,10 @@ from io import BytesIO
 from django.core.files import File
 
 # Create your models here.
-PAYMENT = (
-    ('cash', 'Efectivo'),
-    ('card', 'Tarjeta'),
-    ('transaction','Tranferencia'),
-)
 
 STATUS = (
     ('PÚBLICO EN GENERAL', 'PÚBLICO EN GENERAL'),
+    ('TÉCNICO', 'TÉCNICO'),
     ('PREFERENTE', 'DISTRIBUIDOR PREFERENTE'),
     ('PLUS', 'DISTRIBUIDOR PLUS'),
     ('VIP', 'DISTRIBUIDOR VIP'),
@@ -51,3 +47,4 @@ class CustomerID(models.Model):
         code.write(buffer)
         self.barcode.save('barcode.png', File(buffer), save=False)
         return super().save(*args, **kwargs)
+
