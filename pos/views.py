@@ -6,10 +6,12 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Sum
 from django.http import HttpResponse
 from datetime import timezone
+from django.db.models import F
 
-from . models import Customer, CustomerID
+
+from . models import Customer, CustomerID, Pos_Equipo
 from dashboard.models import Producto, Order
-from . forms import CustomerForm
+from . forms import CustomerForm, Compra_EquiposForm
 from dashboard.forms import ProductoForm, OrderForm
 
 # Create your views here.
@@ -66,8 +68,7 @@ def customer(request):
     orders_count = orders.count()
     total_order_quantity = orders.aggregate(Sum('order_quantity'))['order_quantity__sum']
     customer = Customer.objects.all()
-    customer_count = customer.count()
-    
+        
     if request.method == 'POST':
         form = CustomerForm(request.POST, request.FILES)
         if form.is_valid():
@@ -87,24 +88,50 @@ def customer(request):
         'total_order_quantity':total_order_quantity,
         'total_quantity': total_quantity,
         'customer': customer,
-        'customer_count': customer_count,
     }
     return render(request, 'pos/customers_list.html', context)
 
 @login_required
 def customer_detail(request, pk):
     customers = Customer.objects.get(id=pk)
-    customer_count = Customer.objects.count()
-    barcode = CustomerID.objects.filter(customer=customers).first()
-    orders_count = Order.objects.count()
-    
+    barcode = CustomerID.objects.filter(customer=customers).first()   
+     
     context = {
         'customers':customers,
-        'customer_count': customer_count,
         'barcode':barcode,
-        'orders_count': orders_count,
     }
     return render(request, 'pos/customer_detail.html', context)
+
+@login_required
+def registro_equipos(request):
+    equipos = Pos_Equipo.objects.values('equipo').annotate(total_quantity=Sum('cantidad'))
+    
+    if request.method == 'POST':
+        form = Compra_EquiposForm(request.POST)
+        if form.is_valid():
+            form.save()
+            equipo_cantidad = form.cleaned_data.get('cantidad')
+            equipo_nombre = form.cleaned_data.get('equipo')
+            messages.success(request, f'Se han añadido {equipo_cantidad} equipos {equipo_nombre} correctamente')
+            return redirect('pos-compra-equipos')
+    else: 
+        form = Compra_EquiposForm()    
+
+    context = {
+        'form':form,
+        'equipos':equipos,
+    }
+    return render(request, 'pos/equipos_compra.html', context)
+
+@login_required
+def precio_equipos(request):
+    # Selecciona solo una entrada por cada valor único en el campo "equipo"
+    productos = Pos_Equipo.objects.all()
+    
+    context = {
+        'productos': productos,
+    }
+    return render(request, 'pos/precio.html', context)
 
 @login_required
 def pos_corte(request):
