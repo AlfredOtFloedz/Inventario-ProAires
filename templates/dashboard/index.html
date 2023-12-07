@@ -13,17 +13,19 @@
                                 Próximas Entregas
                             </h4>
                             <tr class="text-white">
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Modelo</th>
-                                <th scope="col">Fecha de Recolección</th>
+                                <th scope="col">Equipo</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Pago</th>
+                                <th scope="col">Estado</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in items %}
+                            {% for apartado in apartados %}
                             <tr>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.type }}</td>
-                                <td>{{ item.total_quantity|default:"0" }}</td>
+                                <td>{{ apartado.product }}</td>
+                                <td>{{ apartado.customer }}</td>
+                                <td>{{ apartado.pago }}</td>
+                                <td>{{ apartado.tipo_orden }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

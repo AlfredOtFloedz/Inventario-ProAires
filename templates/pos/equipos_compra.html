@@ -1,0 +1,59 @@
+{% extends 'partials/base.html'%}
+{% block title %} Productos {% endblock %}
+{% load crispy_forms_tags %}
+    
+{% block content %}
+
+{% include 'partials/topnav_pos.html' %}
+
+    <!--Table-->
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-4">
+                {% for message in messages %}
+                {% if message %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{message}}
+                </div>
+                {% endif %}
+                {% endfor%}
+
+                <div class="border bg-white p-3">
+                    <h4>Registro de Equipos</h4>
+                    <hr>
+                    <form method ="POST" onsubmit="focusFirstInput()">
+                        {% csrf_token %}
+                        {{form|crispy }}
+                        <input class="btn btn-success btn-block" type="submit" value="Añadir">
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <table class="table bg-white">
+                    <thead class="bg-info">
+                        <tr class="text-white">
+                            <th scope="col">Equipo</th>
+                            <th scope="col">Existencias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for equipo in equipos %}
+                        <tr>
+                            <td>{{ equipo.equipo }}</td>
+                            <td>{{ equipo.total_quantity|default:"0" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h3 class="btn btn-primary">
+                    <a class="nav-link" href="{% url 'pos-precio-equipos' %}"> Precios </a>
+                </h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!--End Table-->
+    
+{% endblock %}

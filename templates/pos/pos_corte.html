@@ -17,21 +17,19 @@
                     <tr class="text-white">
                         <th scope="col">Código</th>
                         <th scope="col">Producto</th>
-                        <th scope="col">Categoría</th>
                         <th scope="col">Cantidad</th>
-                        <th scope="col">Trabajador</th>
+                        <th scope="col">Cliente</th>
                         <th scope="col">Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for order in orders %}
+                {% for current_order in current_orders %}
                     <tr>
-                    <th scope="col">{{ order.product.code }}</td>
-                    <td>{{ order.product.name }}</td>
-                    <td>{{ order.product.category }}</td>
-                    <td>{{ order.order_quantity }}</td> 
-                    <td>{{ order.staff.username }}</td>
-                    <td>{{ order.date }}</td>
+                    <th scope="col">{{ current_order.product.code }}</td>
+                    <td>{{ current_order.product.name }}</td>
+                    <td>{{ current_order.order_quantity }}</td> 
+                    <td>{{ current_order.customer }}</td>
+                    <td>{{ current_order.date }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

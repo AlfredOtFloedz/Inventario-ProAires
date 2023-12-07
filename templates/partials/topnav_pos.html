@@ -25,15 +25,13 @@
                             <a class="text-decoration-none text-dark" href="{% url 'pos-customer' %}">
                                 <div class="card my-card shadow text-center p-3">
                                     <h4>Clientes<i class="fas fa-users"></i></h4>
-                                    <h3>{{ customer_count }}</h3>
                                 </div>
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a class="text-decoration-none text-dark" href="{% url 'dashboard-precio' %}">
+                            <a class="text-decoration-none text-dark" href="{% url 'pos-compra-equipos' %}">
                                 <div class="card my-card shadow text-center p-3">
-                                    <h4>Precios<i class="fas fa-box"></i></h4>
-                                    <h3>{{ total_quantity }}</h3>
+                                    <h4>Existencias<i class="fas fa-box"></i></h4>
                                 </div>
                             </a>
                         </div>
@@ -41,7 +39,6 @@
                             <a class="text-decoration-none text-dark" href="{% url 'pos-corte' %}">
                                 <div class="card my-card shadow text-center p-3">
                                     <h4>Corte<i class="fas fa-shipping-fast"></i></h4>
-                                    <h3>{{ orders_count }}</h3>
                                 </div>
                             </a>
                         </div>
