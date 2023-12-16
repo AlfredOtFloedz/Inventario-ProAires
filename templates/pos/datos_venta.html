@@ -1,0 +1,62 @@
+{% load crispy_forms_tags %}
+
+<div class="container">
+
+    <div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                {% if messages %}
+                    <div class="alert alert-success" role="alert">
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="card">
+                    <div class="card-header">
+                        Añadir Orden de Venta
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form | crispy}}
+                            <input class="btn btn-info btn-block" type="submit" value="Añadir Pedido">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        Registro de Ventas 
+                    </div>
+                    <div class="card-body">
+                        <table class="table bg-white">
+                            <thead class="bg-info text-white">
+                                <tr>
+                                    <th scope="col">Clinte</th>
+                                    <th scope="col">Método</th>
+                                    <th scope="col">Forma</th>
+                                    <th scope="col">Facturación</th>
+                                    <th scope="col">Fecha</th>
+                            </thead>
+                            <tbody>
+                                {% for datos_venta in datos_venta %} 
+                                <tr>
+                                    <th scope="col">{{ datos_venta.cliente }}</th>
+                                    <td>{{ datos_venta.metodo_pago }}</td>
+                                    <td>{{ datos_venta.forma_pago }}</td>
+                                    <td>{{ datos_venta.tipo_factura}}</td>
+                                    <td>{{ datos_venta.fecha }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

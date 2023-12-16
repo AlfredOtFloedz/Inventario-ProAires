@@ -12,7 +12,7 @@
                     <a class="nav-link" href="{% url 'dashboard-producto-csv' %}"> Exportar </a>
                 </h3>
                 <h3 class="btn btn-info">
-                    <a class="nav-link" href="{% url 'pos-compra-equipos' %}"> Regresar </a>
+                    <a class="nav-link" href="{% url 'pos-adquisicion-equipos' %}"> Regresar </a>
                 </h3>
                 {% for message in messages %}
                 {% if message %}
@@ -31,6 +31,8 @@
                         <th scope="col" class="text-center">Distribuidor Preferente</th>
                         <th scope="col" class="text-center">Distribuidor Plus</th>
                         <th scope="col" class="text-center">Distribuidor VIP</th>
+                        <th scope="col" class="text-center">Existecias</th>
+                        <th scope="col" class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +44,10 @@
                         <td class="text-center">{{ producto.precio_d1 }}</td>
                         <td class="text-center">{{ producto.precio_d2 }}</td>
                         <td class="text-center">{{ producto.precio_d3 }}</td>
+                        <td class="text-center">{{ producto.cantidad }}</td>
+                        <td class="text-center"> 
+                            <a class="btn btn-info btn-sm" href="{% url 'pos-equipo-actualizar' pk=producto.id %}">Editar</a>
+                        </td>
                     {% endfor %}
                 </tbody>
             </table>
